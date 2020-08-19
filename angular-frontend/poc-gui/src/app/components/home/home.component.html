@@ -1,0 +1,212 @@
+<div class="page-home">
+  <div class="container">
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="page-title">
+          <h2>
+            <img class="svg" src="assets/svg/order.png" />
+            <span>Order</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="form">
+      <div class="col-md-10 mb-2">
+        <mat-card class="productInfo mat-elevation-z10">
+          <form class="example-form">
+            <div>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="customerName" name="customerID" disabled placeholder="Customer Name">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width  mr-4">
+                <input matInput [(ngModel)]="productName" name="productID" disabled placeholder="Product Name">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input type="number" matInput [(ngModel)]="order.count"
+                  (change)="order.price = tempPrice ;order.price = order.count * order.price" name="orderCount"
+                  placeholder="Count">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input type="number" matInput [(ngModel)]="order.price" name="orderPrice" placeholder="Price">
+              </mat-form-field>
+
+            </div>
+
+
+          </form>
+        </mat-card>
+      </div>
+
+      <div class="buttons col-md-2 mb-2">
+        <button class="btn_create mb-3" mat-raised-button color="primary" (click)="createOrder()">Order</button>
+        <button class="btn_clear" mat-raised-button color="primary" (click)="clearForm()">Clear</button>
+      </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+      <div class="col-md-6 mb-4">
+
+        <div>
+          <h2>
+            <img class="svg" src="assets/svg/customer.png" />
+            <span>Customer List </span>
+            <small>
+              <mat-form-field class="ml-4">
+                <input matInput type="text" (keyup)="doFilter('customer',$event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </small>
+          </h2>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="customerDataSource" matSort #TableCustomerSort="matSort" matSortStart="asc">
+
+            <ng-container matColumnDef="customerID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.customerID}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef> Phone </th>
+              <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedCustomerListColumns"></tr>
+            <tr mat-row (click)="getCustomer(row); highlight('customer',row)"
+              *matRowDef="let row; columns: displayedCustomerListColumns;"
+              [ngClass]="{'highlight': selectedCustomerDataSourceRowIndex == row}">
+            </tr>
+          </table>
+
+          <mat-paginator #TableCustomerPaginator="matPaginator" [pageSizeOptions]="[10]" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+
+      </div>
+
+      <div class="col-md-6 mb-4">
+
+        <div>
+          <h2>
+            <img class="svg" src="assets/svg/product.png" />
+            <span>Product List </span>
+            <small>
+              <mat-form-field class="ml-4">
+                <input matInput type="text" (keyup)="doFilter('product',$event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </small>
+          </h2>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="productDataSource" matSort #TableProductSort="matSort" matSortStart="asc">
+
+            <ng-container matColumnDef="productID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.productID}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="count">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
+              <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedProductListColumns"></tr>
+            <tr mat-row (click)="getProduct(row); highlight('product',row)"
+              *matRowDef="let row; columns: displayedProductListColumns;"
+              [ngClass]="{'highlight': selectedProductDataSourceRowIndex == row}">
+            </tr>
+          </table>
+
+          <mat-paginator #TableProductPaginator="matPaginator" [pageSizeOptions]="[10]" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row mt-4 mb-4">
+      <div class="col-md-12">
+
+        <div>
+          <h2>
+            <img class="svg" src="assets/svg/history.png" />
+            <span>Order History </span>
+            <small>
+              <mat-form-field class="ml-4">
+                <input matInput type="text" (keyup)="doFilter('order',$event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </small>
+          </h2>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="orderDataSource" matSort #TableOrderSort="matSort" matSortStart="asc">
+
+            <ng-container matColumnDef="orderID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.orderID}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customerName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="productName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="count">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
+              <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="orderDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.orderDate}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedOrderListColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedOrderListColumns;">
+            </tr>
+          </table>
+
+          <mat-paginator #TableOrderPaginator="matPaginator" [pageSizeOptions]="[10]" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

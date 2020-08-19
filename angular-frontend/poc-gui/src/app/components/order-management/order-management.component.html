@@ -1,0 +1,132 @@
+<div class="page-home">
+  <div class="container">
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="page-title">
+          <h2>
+            <img class="svg" src="assets/svg/order.png" />
+            <span>CRUD Order
+            </span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="form">
+      <div class="col-md-10 mb-2">
+        <mat-card class="personelInfo mat-elevation-z10">
+          <form class="example-form">
+
+            <div class="form-group">
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="order.orderID" name="orderID" disabled placeholder="Order ID">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="order.customerName" name="customerID" disabled placeholder="Customer Name">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="order.productName" name="productID" disabled placeholder="Product Name">
+              </mat-form-field>
+
+            </div>
+
+            <div>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="order.count" name="count" disabled placeholder="Count">
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width mr-4">
+                <input matInput [(ngModel)]="order.price" name="price" disabled placeholder="Price">
+              </mat-form-field>
+
+            </div>
+
+          </form>
+        </mat-card>
+      </div>
+
+      <div class="buttons col-md-2 mb-2">
+        <button class="btn_clear" mat-raised-button color="primary" (click)="clearForm()">Clear</button>
+      </div>
+
+    </div>
+
+    <div class="row mt-4 mb-2">
+      <div class="col-md-6">
+        <div class="page-title">
+          <h2>
+            <img class="svg" src="assets/svg/history.png" />
+            <span>Order History</span>
+            <small>
+              <mat-form-field class="ml-4">
+                <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+            </small>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="orderDataSource" matSort #TableOrderSort="matSort" matSortStart="asc">
+
+            <ng-container matColumnDef="orderID">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.orderID}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customerName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="productName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="count">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Count </th>
+              <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="orderDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.orderDate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+              <th mat-header-cell *matHeaderCellDef> Delete </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="warn" (click)="deleteOrderByID(element.orderID)">
+                  <mat-icon class="mat-18">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedOrderListColumns"></tr>
+            <tr mat-row (click)="getOrder(row); highlight(row)"
+              *matRowDef="let row; columns: displayedOrderListColumns;"
+              [ngClass]="{'highlight': selectedRowItem == row}">
+            </tr>
+          </table>
+
+          <mat-paginator #TableOrderPaginator="matPaginator" [pageSizeOptions]="[10]" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
